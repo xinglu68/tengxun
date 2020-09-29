@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <div>
+      生日为： <input type="text" id="text"/> <button onclick="handleClick()">确认</button>
+      <br />
+      结果为： <div id="result"></div>
+    </div>
+    <script>
+      var nums = []
+      function getAll(){
+        const firstNum = [1,2,3,6]
+        for(let i=0;i<4;i++){
+          for(let j=0;j<10000;j++){
+            nums.push(firstNum[i]*10000+j);
+          }
+        }
+      }
+      getAll(nums);
+      console.log(nums);
+
+      function getResult(date){
+        var sortArr = [];
+        console.log(date)
+        nums.forEach(item=>{
+          // console.log(isFit(item))
+          if(isFit(item)){
+            let itemWeight = getWeight(item, date);
+            if(sortArr.length<20){
+              sortArr.push([item,itemWeight]);
+            }else{
+              sortArr.sort((a,b)=> a[1]-b[1]);
+              if(sortArr[0][1] < itemWeight){
+                sortArr[0] = [item,itemWeight]
+              }
+            }
+          }
+        })
+        return sortArr;
+      }
+
+
+      function getWeight(num, date){
+        var dateArr = date.split('').map(item=>parseInt(item));
+        var numStr = num.toString();
+        var numArr = numStr.split('').map(item=>parseInt(item));
+        var count = 0;
+        var len = dateArr.length;
+        if(numStr.substr(0,len) === date){
+          console.log(date)
+          count += 3;
+        }
+        if(numStr.substr(1,len) === date && len === 3){
+          count += 1;
+        }
+        if(numStr.substr(-len) === date){
+          count += 2;
+        }
+        for(let i=0;i<numArr.length;i++){
+          if(numArr[i]===6 || numArr[i]===8 || numArr[i]===9){
+            if(i+1<numArr.length && numArr[i]===numArr[i+1]){
+              count += 2;
+            }else{
+              count += 1;
+            }
+          }
+        }
+        return count;
+      }
+
+      function isFit(num){
+        var numArr = num.toString().split('').map(item=>parseInt(item));
+        for(let i=2;i<5;i++){
+          if(numArr[i] === numArr[i-1]+1 && numArr[i] === numArr[i-2]+2){
+            return false;
+          }
+          if(numArr[i] === numArr[i-1]-1 && numArr[i] === numArr[i-2]-2){
+            return false;
+          }
+        }
+        numArr.sort();
+        for(let i=2;i<5;i++){
+          if(numArr[i] === numArr[i-1] && numArr[i]===numArr[i-2]){
+            return false;
+          }
+        }
+        return true;
+      }
+
+      function handleClick(){
+        var x=document.getElementById("text");
+        var res = document.getElementById("result");
+        console.log(getResult(x.value).sort((a,b)=> b[1]-a[1]))
+        res.innerHTML = getResult(x.value).sort((a,b)=> b[1]-a[1]).join('<br />')
+      }
+
+    </script>
+  </body>
+</html>
