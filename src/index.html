@@ -21,13 +21,10 @@
         }
       }
       getAll(nums);
-      console.log(nums);
 
       function getResult(date){
         var sortArr = [];
-        console.log(date)
         nums.forEach(item=>{
-          // console.log(isFit(item))
           if(isFit(item)){
             let itemWeight = getWeight(item, date);
             if(sortArr.length<20){
@@ -51,7 +48,6 @@
         var count = 0;
         var len = dateArr.length;
         if(numStr.substr(0,len) === date){
-          console.log(date)
           count += 3;
         }
         if(numStr.substr(1,len) === date && len === 3){
